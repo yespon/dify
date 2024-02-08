@@ -1,0 +1,45 @@
+identity:
+  name: azure_gpt4v
+  author: YesponLiu
+  label:
+    en_US: Azure GPT4V
+    zh_Hans: Azure GPT4V
+    pt_BR: Azure GPT4V
+  description:
+    en_US: GPT4V is a large multimodal model (LMM) developed by OpenAI that can analyze images and provide textual responses to questions about them. It incorporates both natural language processing and visual understanding.
+    zh_Hans: GPT4V 是 OpenAI 开发的大型多模态模型 (LMM)，可以分析图像并针对有关图像的问题提供文本响应。它结合了自然语言处理和视觉理解。
+    pt_BR: GPT4V é um grande modelo multimodal (LMM) desenvolvido pela OpenAI que pode analisar imagens e fornecer respostas textuais a perguntas sobre elas. Incorpora processamento de linguagem natural e compreensão visual.
+description:
+  human:
+    en_US: GPT4V is a large multimodal model
+    zh_Hans: GPT4V 是一个大型多模态模型
+    pt_BR: GPT4V é um grande modelo multimodal
+  llm: GPT4V is a large multimodal model
+parameters:
+  - name: img_url
+    type: string
+    required: true
+    label:
+      en_US: image url
+      zh_Hans: 图像链接
+      pt_BR: imagem url
+    human_description:
+      en_US: Image url，you can view the official documentation of GPT4V
+      zh_Hans: 图像链接，你可以查看 GPT4V 的官方文档
+      pt_BR: Imagem url, você pode ver a documentação oficial do GPT4V
+    llm_description: Image's url starting with http/https, what you want GPT4V to answer about the image.
+    form: llm
+  - name: content
+    type: string
+    required: true
+    label:
+      en_US: content
+      zh_Hans: 内容
+      pt_BR: conteúdo
+    human_description:
+      en_US: user's question about the image
+      zh_Hans: 用户的问题
+      pt_BR: pergunta do usuário
+    llm_description: user's question about the image
+    form: llm
+
