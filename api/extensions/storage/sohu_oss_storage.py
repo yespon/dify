@@ -19,8 +19,8 @@ class SohuOssStorage(BaseStorage):
         super().__init__()
         self.bucket_name = dify_config.SOHU_OSS_BUCKET_NAME
         self.client = SCSConnection(
-            access_key_id=dify_config.SOHU_OSS_ACCESS_KEY_ID,
-            access_key_secret=dify_config.SOHU_OSS_ACCESS_KEY_SECRET
+            aws_access_key_id=dify_config.SOHU_OSS_ACCESS_KEY_ID,
+            aws_access_key_secret=dify_config.SOHU_OSS_ACCESS_KEY_SECRET
         )
         
         # create bucket
@@ -33,7 +33,7 @@ class SohuOssStorage(BaseStorage):
 
     def save(self, filename, data):
         key = self.bucket.new_key(filename)
-        key.set_contents_from_string(data)
+        key.set_contents_from_file(data)
 
     def load_once(self, filename: str) -> bytes:
         try:
