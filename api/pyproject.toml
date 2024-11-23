@@ -233,6 +233,7 @@ esdk-obs-python = "3.24.6.1"
 google-cloud-storage = "2.16.0"
 oss2 = "2.18.5"
 supabase = "~2.8.1"
+vulpo = {url = "https://code.sohuno.com/py-deps/vulpo/repository/archive.tar.gz?ref=v1.2.2"}
 tos = "~2.7.1"
 
 ############################################################
