@@ -1,7 +1,8 @@
+import io
 import logging
 from collections.abc import Generator
 
-import vulpo
+import sys
 import collections
 sys.modules['collections'].Callable = collections.abc.Callable
 from vulpo.scs.connection import SCSConnection
@@ -20,7 +21,7 @@ class SohuOssStorage(BaseStorage):
         self.bucket_name = dify_config.SOHU_OSS_BUCKET_NAME
         self.client = SCSConnection(
             aws_access_key_id=dify_config.SOHU_OSS_ACCESS_KEY_ID,
-            aws_access_key_secret=dify_config.SOHU_OSS_ACCESS_KEY_SECRET
+            aws_secret_access_key=dify_config.SOHU_OSS_ACCESS_KEY_SECRET
         )
         
         # create bucket
@@ -33,12 +34,19 @@ class SohuOssStorage(BaseStorage):
 
     def save(self, filename, data):
         key = self.bucket.new_key(filename)
-        key.set_contents_from_file(data)
+        if isinstance(data, str):
+            data = data.encode('utf-8')
+        fp = io.BytesIO(data)
+        key.set_contents_from_file(fp)
+        fp.close()
 
     def load_once(self, filename: str) -> bytes:
         try:
             key = self.bucket.get_key(filename)
-            data = key.get_contents_as_string()
+            fp = io.BytesIO()
+            key.get_contents_to_file(fp)
+            data = fp.getvalue()
+            fp.close()
         except Exception as e:
             if not key:
                 raise FileNotFoundError("File not found")

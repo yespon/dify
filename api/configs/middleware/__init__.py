@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 from configs.middleware.cache.redis_config import RedisConfig
 from configs.middleware.storage.aliyun_oss_storage_config import AliyunOSSStorageConfig
 from configs.middleware.storage.amazon_s3_storage_config import S3StorageConfig
+from configs.middleware.storage.sohu_oss_storage_config import SohuOSSStorageConfig
 from configs.middleware.storage.azure_blob_storage_config import AzureBlobStorageConfig
 from configs.middleware.storage.baidu_obs_storage_config import BaiduOBSStorageConfig
 from configs.middleware.storage.google_cloud_storage_config import GoogleCloudStorageConfig
@@ -239,6 +240,7 @@ class MiddlewareConfig(
     SupabaseStorageConfig,
     TencentCloudCOSStorageConfig,
     VolcengineTOSStorageConfig,
+    SohuOSSStorageConfig,
     # configs of vdb and vdb providers
     VectorStoreConfig,
     AnalyticdbConfig,
