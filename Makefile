@@ -2,7 +2,7 @@
 DOCKER_REGISTRY=private-registry.sohucs.com/sns-ai-base
 WEB_IMAGE=$(DOCKER_REGISTRY)/dify-web
 API_IMAGE=$(DOCKER_REGISTRY)/dify-api
-VERSION=latest
+VERSION=s0.14.0
 
 # Build Docker images
 build-web:
