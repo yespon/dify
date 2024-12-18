@@ -81,7 +81,6 @@ class Storage:
             case _:
                 raise ValueError(f"Unsupported storage type {storage_type}")
 
-
     def save(self, filename, data):
         try:
             self.storage_runner.save(filename, data)

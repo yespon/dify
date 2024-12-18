@@ -1,9 +1,9 @@
+import collections
 import io
 import logging
+import sys
 from collections.abc import Generator
 
-import sys
-import collections
 sys.modules['collections'].Callable = collections.abc.Callable
 from vulpo.scs.connection import SCSConnection
 

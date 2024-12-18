@@ -7,13 +7,13 @@ from pydantic_settings import BaseSettings
 from .cache.redis_config import RedisConfig
 from .storage.aliyun_oss_storage_config import AliyunOSSStorageConfig
 from .storage.amazon_s3_storage_config import S3StorageConfig
-from .storage.sohu_oss_storage_config import SohuOSSStorageConfig
 from .storage.azure_blob_storage_config import AzureBlobStorageConfig
 from .storage.baidu_obs_storage_config import BaiduOBSStorageConfig
 from .storage.google_cloud_storage_config import GoogleCloudStorageConfig
 from .storage.huawei_obs_storage_config import HuaweiCloudOBSStorageConfig
 from .storage.oci_storage_config import OCIStorageConfig
 from .storage.opendal_storage_config import OpenDALStorageConfig
+from .storage.sohu_oss_storage_config import SohuOSSStorageConfig
 from .storage.supabase_storage_config import SupabaseStorageConfig
 from .storage.tencent_cos_storage_config import TencentCloudCOSStorageConfig
 from .storage.volcengine_tos_storage_config import VolcengineTOSStorageConfig
@@ -44,6 +44,7 @@ class StorageConfig(BaseSettings):
     STORAGE_TYPE: Literal[
         "opendal",
         "s3",
+        "sohu-oss",
         "aliyun-oss",
         "azure-blob",
         "baidu-obs",
@@ -56,7 +57,7 @@ class StorageConfig(BaseSettings):
         "local",
     ] = Field(
         description="Type of storage to use."
-        " Options: 'opendal', '(deprecated) local', 's3', 'aliyun-oss', 'azure-blob', 'baidu-obs', 'google-storage', "
+        " Options: 'opendal', '(deprecated) local', 's3', 'sohu-oss', 'aliyun-oss', 'azure-blob', 'baidu-obs', 'google-storage', "
         "'huawei-obs', 'oci-storage', 'tencent-cos', 'volcengine-tos', 'supabase'. Default is 'opendal'.",
         default="opendal",
     )
