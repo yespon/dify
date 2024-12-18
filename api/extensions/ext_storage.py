@@ -74,8 +74,13 @@ class Storage:
                 from extensions.storage.supabase_storage import SupabaseStorage
 
                 return SupabaseStorage
+            case StorageType.SOHU_OSS:
+                from extensions.storage.sohu_oss_storage import SohuOssStorage
+
+                return SohuOssStorage
             case _:
                 raise ValueError(f"Unsupported storage type {storage_type}")
+
 
     def save(self, filename, data):
         try:

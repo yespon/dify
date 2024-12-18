@@ -14,3 +14,4 @@ class StorageType(StrEnum):
     TENCENT_COS = "tencent-cos"
     VOLCENGINE_TOS = "volcengine-tos"
     SUPBASE = "supabase"
+    SOHU_OSS = "sohu-oss"
