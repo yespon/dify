@@ -45,7 +45,7 @@ EXPOSE 5001
 
 # set timezone
 # UTC
-ENV TZ="Asia/Shanghai"
+ENV TZ=Asia/Shanghai
 
 WORKDIR /app/api
 
@@ -60,6 +60,7 @@ RUN apt-get update \
     # install a chinese font to support the use of tools like matplotlib
     && apt-get install -y fonts-noto-cjk \
     && apt-get autoremove -y \
+    && apt-get install -y tzdata && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python environment and packages
