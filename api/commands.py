@@ -2,8 +2,8 @@ import base64
 import json
 import logging
 import secrets
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
 import click
 from flask import current_app
