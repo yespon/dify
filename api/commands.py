@@ -3,6 +3,7 @@ import json
 import logging
 import secrets
 from typing import Optional
+from pathlib import Path
 
 import click
 from flask import current_app
@@ -640,3 +641,115 @@ where sites.id is null limit 1000"""
                 break
 
     click.echo(click.style("Fix for missing app-related sites completed successfully!", fg="green"))
+
+
+@click.command("upload-private-key-file-to-cloud-storage", help="upload private key file to cloud storage")
+@click.option("--tenant_id", prompt=False, help="tenant_id")
+def upload_private_key_file_cloud_storage(tenant_id: Optional[str] = None):
+    """
+    upload private.pem to cloud storage
+    """
+    click.echo(
+        click.style(
+            "Start upload private.pem to cloud storage",
+            fg="green",
+        )
+    )
+
+    if not tenant_id:
+        click.echo(
+            click.style("Warning: did not provide an tenant_id, it will be auto queried in the database", fg="yellow"))
+        tenants_list: List[Tenant] = Tenant.query.all()
+        tenants = [item.id for item in tenants_list]
+    else:
+        tenants = [tenant_id, ]
+
+    for tenant_id in tenants:
+        click.echo(
+            click.style(
+                f"Current tenant_id is: {tenant_id}",
+                fg="green",
+            )
+        )
+
+        file_key = f"privkeys/{tenant_id}/private.pem"
+        file_path = Path(f"{os.environ.get('STORAGE_LOCAL_PATH', 'storage')}/{file_key}")
+        file_content = file_path.read_bytes()
+        storage.save(filename=file_key, data=file_content)
+        click.echo(
+            click.style(
+                "Congratulations! file uploaded. link: {}".format(
+                    f'https://{os.environ.get("OSS_BUCKET_DOMAIN_NAME", "")}/{file_key}'
+                ),
+                fg="green",
+            )
+        )
+
+
+@click.command("upload-local-files-to-cloud-storage", help="upload local files to cloud storage")
+def upload_local_files_to_cloud_storage():
+    """
+    upload local files to cloud storage
+    """
+    click.echo(
+        click.style(
+            "Start upload local files to cloud storage",
+            fg="green",
+        )
+    )
+
+    # TODO 2024-10-9 If the amount of data is large, it must be queried in batches
+    files: List[UploadFile] = UploadFile.query.filter_by(storage_type="local").all()
+
+    click.echo(
+        click.style(
+            f"files count: {len(files)}",
+            fg="green",
+        )
+    )
+
+    for file in files:
+        target_filepath = f"{os.environ.get('STORAGE_LOCAL_PATH', 'storage')}/{file.key}"
+
+        # if the file exists
+        if not os.path.exists(target_filepath):
+            click.echo(
+                click.style(
+                    f"Warning! file not exist. filepath: {target_filepath}, ignore this, continue",
+                    fg="yellow",
+                )
+            )
+            continue
+
+        # Upload to cloud storage
+        file_content = Path(target_filepath).read_bytes()
+        storage.save(filename=file.key, data=file_content)
+        click.echo(
+            click.style(
+                f"File uploaded. file.key: {file.key}",
+                fg="green",
+            )
+        )
+
+        # Update database record
+        file.storage_type = os.environ["STORAGE_TYPE"]
+        db.session.commit()
+        click.echo(
+            click.style(
+                f"file.storage_type updated to database. file.key: {file.key}",
+                fg="green",
+            )
+        )
+
+    click.echo(
+        click.style(
+            "Congratulations! finish files uploaded.",
+            fg="green",
+        )
+    )
+
+
+# def register_commands(app):
+#     # other code
+#     app.cli.add_command(upload_private_key_file_cloud_storage)
+#     app.cli.add_command(upload_local_files_to_cloud_storage)
